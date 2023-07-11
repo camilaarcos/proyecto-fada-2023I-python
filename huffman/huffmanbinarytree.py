@@ -3,7 +3,9 @@
 class HuffmanBinaryTree:
   """
   Clase que implementa un árbol binario de Huffman
-  Autor:<Estudiantes>
+  Autor:<Maria Camila Arcos
+           Ricardo Arrubla
+          Juan Camilo  Molina>
   """ 
   def __init__(self):
     """
@@ -20,17 +22,19 @@ class HuffmanBinaryTree:
     si es un string retorna -1, si es un 
     numero retorna el numero.
     """
-    raise NotImplementedError("Aún no implementado")
+    if isinstance(self.key, int) or isinstance(self.key, float):
+            return self.key
+    return -1
 
   def getLeft(self):
     """
     Retorna el hijo izquierdo del arbol.
     """
-    raise NotImplementedError("Aún no implementado")
+    return self.left
   
 
   def getRight(self):
     """
     Retorna el hijo derecho del arbol.
     """
-    raise NotImplementedError("Aún no implementado")
+    return self.right
