@@ -1,3 +1,4 @@
+from .huffmanbinarytree import HuffmanBinaryTree
 class HuffmanDecoding:
     """
     Clase HuffmanDecoding
@@ -8,7 +9,7 @@ class HuffmanDecoding:
     Version: <1>
     """
     def __init__(self):
-        pass
+        self.table = None
 
     def decode(self, text, tree):
         """
@@ -19,19 +20,25 @@ class HuffmanDecoding:
         """
         if not text or not tree:
             return ""
-
-
+        self.table = self._build_table(tree)
         decoded_text = ""
-        node = tree
+        current_code = ""
 
         for bit in text:
-            if bit == "0":
-                node = node.getLeft()
-            else:
-                node = node.getRight()
-
-            if node.getNumberKey() != -1:
-                decoded_text += str(node.getNumberKey())
-                node = tree
+            current_code += bit
+            if current_code in self.table:
+                decoded_text += self.table[current_code]
+                current_code = ''
 
         return decoded_text
+
+    def _build_table(self, tree, code='', table=None):
+        if table is None:
+            table = {}
+        if isinstance(tree, HuffmanBinaryTree):
+            if tree.getNumberKey() != -1:
+                table[code] = tree.value
+            else:
+                self._build_table(tree.left, code + '0', table)
+                self._build_table(tree.right, code + '1', table)
+        return table

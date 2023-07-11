@@ -3,6 +3,7 @@ from huffman.huffmancoding import HuffmanCoding
 from huffman.huffmandecoding import HuffmanDecoding
 
 
+
 @staticmethod
 def verify_tree(tree):
     """
@@ -10,21 +11,21 @@ def verify_tree(tree):
     :param tree: árbol de Huffman
     :return: True si el árbol es válido, False de lo contrario
     """
-    key = tree.get_number_key()
+    key = tree.getNumberKey()
     if key != -1:
-        left = tree.get_left()
-        right = tree.get_right()
+        left = tree.getLeft()
+        right = tree.getRight()
 
         if left is not None and right is not None:
-            condition = key >= left.get_number_key() and key >= right.get_number_key()
+            condition = key >= left.getNumberKey() and key >= right.getNumberKey()
             return condition and verify_tree(left) and verify_tree(right)
         else:
             if left is None:
-                condition = key >= right.get_number_key()
+                condition = key >= right.getNumberKey()
                 return condition and verify_tree(right)
             else:
                 if right is None:
-                    condition = key >= left.get_number_key()
+                    condition = key >= left.getNumberKey()
                     return condition and verify_tree(left)
                 else:
                     return True
@@ -38,10 +39,10 @@ def test_files(filename):
 
     coding = HuffmanCoding()
     encoded = coding.encode(text)
-    tree = coding.get_tree()
-    
+    tree = coding.getTree()
+
     decoding = HuffmanDecoding()
     decoded = decoding.decode(encoded, tree)
 
-    assert self.verify_tree(tree)
+    assert verify_tree(tree)
     assert text == decoded
