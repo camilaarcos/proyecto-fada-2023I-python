@@ -32,7 +32,7 @@ def verify_tree(tree):
         return True
 
 @pytest.mark.parametrize("filename", ["ejemplo1.in", "ejemplo2.in", "ejemplo3.in"])
-def test_files(self, filename):
+def test_files(filename):
     with open(f'resources/{filename}', 'r') as file:
         text = file.read()
 
