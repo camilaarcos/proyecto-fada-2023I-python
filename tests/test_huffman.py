@@ -13,8 +13,8 @@ def verify_tree(tree):
     """
     key = tree.getNumberKey()
     if key != -1:
-        left = tree.get_left()
-        right = tree.get_right()
+        left = tree.getLeft()
+        right = tree.getRight()
 
         if left is not None and right is not None:
             condition = key >= left.getNumberKey() and key >= right.getNumberKey()

@@ -37,7 +37,7 @@ class HuffmanDecoding:
             table = {}
         if isinstance(tree, HuffmanBinaryTree):
             if tree.getNumberKey() != -1:
-                table[code] = tree.value
+                table[code] = tree.getValue()
             else:
                 self._build_table(tree.left, code + '0', table)
                 self._build_table(tree.right, code + '1', table)

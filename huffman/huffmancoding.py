@@ -1,5 +1,6 @@
 from collections import defaultdict
 from heapq import heappop, heappush
+from huffman.huffmanbinarytree import HuffmanBinaryTree
 
 class HuffmanCoding:
     """
@@ -31,6 +32,7 @@ class HuffmanCoding:
 
         # Paso 2: Construir el árbol de Huffman
         heap = [[weight, [char, ""]] for char, weight in frequencies.items()]
+        self.tree = self.heapToTree(heap)
         while len(heap) > 1:
             lo = heap.pop(0)
             hi = heap.pop(0)
@@ -40,16 +42,109 @@ class HuffmanCoding:
                 pair[1] = '1' + pair[1]
             heappush(heap, [lo[0] + hi[0]] + lo[1:] + hi[1:])
             heap.sort(key=lambda x: x[0])
-        self.tree = heap[0]
+
         # Utiliza una estructura de datos llamada heap para construir
         # el arbol de manera eficiente
         # Paso 3: Generar la tabla de codificación
-        self.table = {char: code for char, code in self.tree[1:]}
+        self.table = {char: code for char, code in heap[0][1:]}
 
         # Paso 4: Codificar el texto
         encoded_text = ''.join(self.table[char] for char in text)
 
         return encoded_text
+    
+    def heapToTree(self,heap:list):
+        lista = heap.copy()
+
+        arbol = type(HuffmanBinaryTree())
+
+        while len(lista) > 1:
+            lo = lista.pop(0)
+            hi = lista.pop(0)
+            tree = HuffmanBinaryTree()
+
+            if(type(lo) == arbol and type(hi) == arbol):
+                if(lo.getNumberKey() <= hi.getNumberKey()):
+                    tree.setKey(lo.getNumberKey() + hi.getNumberKey())
+                    tree.setLeft(lo)
+                    tree.setRight(hi)
+                else:
+                    tree.setKey(lo.getNumberKey() + hi.getNumberKey())
+                    tree.setLeft(hi)
+                    tree.setRight(lo)
+                lista.append(tree)
+            
+            elif(type(lo) == arbol and type(hi) != arbol):
+                if(lo.getNumberKey() <= hi[0]):
+                    tree.setKey(lo.getNumberKey() + hi[0])
+                    tree.setLeft(lo)
+
+                    treeDer = HuffmanBinaryTree()
+                    treeDer.setKey(hi[0])
+                    treeDer.setValue(hi[1][0])
+                    
+                    tree.setRight(treeDer)
+                else:
+                    tree.setKey(lo.getNumberKey() + hi[0])
+
+                    treeIzq = HuffmanBinaryTree()
+                    treeIzq.setKey(hi[0])
+                    treeIzq.setValue(hi[1][0])
+                    
+                    tree.setLeft(treeIzq)
+                    tree.setRight(lo)
+                lista.append(tree)
+
+            elif(type(lo) != arbol and type(hi) == arbol):
+                if(lo[0] <= hi.getNumberKey()):
+                    tree.setKey(lo[0] + hi.getNumberKey())
+                    
+                    treeIzq = HuffmanBinaryTree()
+                    treeIzq.setKey(lo[0])
+                    treeIzq.setValue(lo[1][0])
+
+                    tree.setLeft(treeIzq)
+                    tree.setRight(hi)
+                else:
+                    tree.setKey(lo[0] + hi.getNumberKey())
+
+                    treeDer = HuffmanBinaryTree()
+                    treeDer.setKey(lo[0])
+                    treeDer.setValue(lo[1][0])
+
+                    tree.setLeft(hi)
+                    tree.setRight(treeDer)
+                lista.append(tree)
+            
+            elif(type(lo) != arbol and type(hi) != arbol):
+                key = lo[0] + hi[0]
+                tree.setKey(key)
+                if(lo[0] <= hi[0]):
+
+                    treeIzq = HuffmanBinaryTree()
+                    treeIzq.setKey(lo[0])
+                    treeIzq.setValue(lo[1][0])
+
+                    treeDer = HuffmanBinaryTree()
+                    treeDer.setKey(hi[0])
+                    treeDer.setValue(hi[1][0])
+
+                    tree.setLeft(treeIzq)
+                    tree.setRight(treeDer)
+                else:
+                    treeIzq = HuffmanBinaryTree()
+                    treeIzq.setKey(hi[0])
+                    treeIzq.setValue(hi[1][0])
+
+                    treeDer = HuffmanBinaryTree()
+                    treeDer.setKey(lo[0])
+                    treeDer.setValue(lo[1][0])
+
+                    tree.setLeft(treeIzq)
+                    tree.setRight(treeDer)
+                lista.append(tree)
+
+        return lista[0]
 
 
     def getTree(self):
